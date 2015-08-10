@@ -1,3 +1,6 @@
+#ifndef rgb_controls_h
+#define rgb_controls_h
+
 #include "application.h"
 
 
@@ -7,9 +10,13 @@ namespace RGBControls {
         Color(int r, int g, int b);
         Color withBrightness(int brightness);
         Color lerp(Color to, float t);
-        int _red;
-        int _green;
-        int _blue;
+        static const Color RED = Color(255, 0, 0);
+        static const Color BLUE = Color(0, 255, 0);
+        static const Color GREEN = Color(0, 0, 255);
+        int red;
+        int green;
+        int blue;
+
     };
 
     class Led {
@@ -28,3 +35,5 @@ namespace RGBControls {
         int _dir;
     };
 }
+
+#endif
