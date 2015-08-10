@@ -1,0 +1,7 @@
+{
+    "name": "rgb-controls",
+    "version": "0.0.1",
+    "author": "Michael Gillett <mgillett54@gmail.com>",
+    "license": "MIT",
+    "description": "Particle.io library with methods for controlling RGB LEDs"
+}
