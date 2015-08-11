@@ -40,22 +40,22 @@ namespace RGBControls {
     analogWrite(_bPin, c.blue);
   }
 
-  void Led::pulse(Color c, int base, int delta, int cycleTime) {
-    Color nextColor = c.withBrightness(base + _step);
+  void Led::pulse(Color c, int min, int max, int cycleTime) {
+    Color nextColor = c.withBrightness(min + _step);
     setColor(nextColor);
     delay(cycleTime / (2 * delta));
-    step(delta);
+    step(min, max);
   }
 
   void Led::fadeBetween(Color c1, Color c2) {
     Color nextColor = c1.lerp(c2, _step / 100.0);
     setColor(nextColor);
     delay(50);
-    step(100);
+    step(0, 100);
   }
 
-  void Led::step(int delta) {
-   if (_step >= delta || _step <= 0) {
+  void Led::step(int min, int max) {
+   if (_step >= max || _step <= min) {
       _dir *= -1;
     }
     _step += _dir;

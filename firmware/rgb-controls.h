@@ -10,9 +10,6 @@ namespace RGBControls {
         Color(int r, int g, int b);
         Color withBrightness(int brightness);
         Color lerp(Color to, float t);
-        static const Color RED = Color(255, 0, 0);
-        static const Color BLUE = Color(0, 255, 0);
-        static const Color GREEN = Color(0, 0, 255);
         int red;
         int green;
         int blue;
@@ -23,9 +20,9 @@ namespace RGBControls {
       public:
         Led(int rPin, int gPin, int bPin);
         void setColor(Color c);
-        void pulse(Color c, int base, int delta, int cycleTime);
+        void pulse(Color c, int min, int max, int cycleTime);
         void fadeBetween(Color c1, Color c2);
-        void step(int delta);
+        void step(int min, int max);
       private:
         int _rPin;
         int _gPin;
