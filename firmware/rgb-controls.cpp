@@ -4,9 +4,9 @@
 
 namespace RGBControls {
   Color::Color(int r, int g, int b) {
-    _red = r;
-    _green = g;
-    _blue = b;
+    red = r;
+    green = g;
+    blue = b;
   }
 
   Color Color::withBrightness(int brightness) {
