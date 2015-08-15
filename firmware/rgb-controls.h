@@ -22,6 +22,10 @@ namespace RGBControls {
         void setColor(Color c);
         void pulse(Color c, int min, int max, int cycleTime);
         void fadeBetween(Color c1, Color c2);
+        void fadeN(Color* colors, int length);
+        void flash(Color c, int onTime, int offTime);
+        void flashN(Color* colors, int length);
+        void off();
         void step(int min, int max);
       private:
         int _rPin;
