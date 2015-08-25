@@ -13,24 +13,24 @@ namespace RGBControls {
         int red;
         int green;
         int blue;
-
     };
 
     class Led {
       public:
-        Led(int rPin, int gPin, int bPin);
+        Led(int rPin, int gPin, int bPin, bool isCathode = true);
         void setColor(Color c);
-        void pulse(Color c, int min, int max, int cycleTime);
-        void fadeBetween(Color c1, Color c2);
-        void fadeN(Color* colors, int length);
-        void flash(Color c, int onTime, int offTime);
-        void flashN(Color* colors, int length);
+        void fade(Color c1, Color c2, int duration);
+        void fade(Color* colors, int length, int duration);
+        void fadeOnce(Color c1, Color c2, int duration);
+        void flash(Color c, int onTime = 200, int offTime = 200);
+        void flash(Color* colors, int length, int onTime = 200, int offTime = 200);
         void off();
         void step(int min, int max);
       private:
         int _rPin;
         int _gPin;
         int _bPin;
+        bool _isCathode;
 
         int _step;
         int _dir;

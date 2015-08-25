@@ -23,20 +23,27 @@ namespace RGBControls {
     return Color(red + dR, green + dG, blue + dB);
   }
 
-  Led::Led(int rPin, int gPin, int bPin) {
+  Led::Led(int rPin, int gPin, int bPin, bool isCathode) {
     _rPin = rPin;
     _gPin = gPin;
     _bPin = bPin;
     _step = 1;
+    _isCathode = isCathode;
     pinMode(_rPin, OUTPUT);
     pinMode(_gPin, OUTPUT);
     pinMode(_bPin, OUTPUT);
   }
 
   void Led::setColor(Color c) {
-    analogWrite(_rPin, c.red);
-    analogWrite(_gPin, c.green);
-    analogWrite(_bPin, c.blue);
+    if (_isCathode) {
+      analogWrite(_rPin, c.red);
+      analogWrite(_gPin, c.green);
+      analogWrite(_bPin, c.blue);
+    } else {
+      analogWrite(_rPin, 255 - c.red);
+      analogWrite(_gPin, 255 - c.green);
+      analogWrite(_bPin, 255 - c.blue);
+    }
   }
 
   void Led::off() {
@@ -51,23 +58,17 @@ namespace RGBControls {
     delay(offTime);
   }
 
-  void Led::flashN(Color* colors, int length) {
+  void Led::flash(Color* colors, int length, int onTime, int offTime) {
     for (int n = 0; n < length; n++) {
-      flash(colors[n], 500, 0);
+      flash(colors[n], onTime, offTime);
     }
-  }
-
-  void Led::pulse(Color c, int min, int max, int cycleTime) {
-    Color nextColor = c.withBrightness(min + _step);
-    setColor(nextColor);
-    delay(cycleTime / (max - min));
-    step(min, max);
   }
 
   int n = 0;
   bool up = false;
-  void Led::fadeN(Color* colors, int length) {
-    if (_step == 0 || _step == 100) {
+  void Led::fade(Color* colors, int length, int duration) {
+    float steps = duration / 25;
+    if (_step == 0 || _step == steps) {
       n++;
       if (n >= length) {
         n = 0;
@@ -77,18 +78,27 @@ namespace RGBControls {
     Color a = colors[n];
     Color b = colors[(n + 1 == length) ? 0 : n + 1];
     if ((n % 2 == 0) ^ up)
-      fadeBetween(a, b);
+      fade(a, b, duration);
     else
-      fadeBetween(b, a);
+      fade(b, a, duration);
   }
 
-  void Led::fadeBetween(Color c1, Color c2) {
-    Color nextColor = c1.lerp(c2, _step / 100.0);
+  void Led::fade(Color c1, Color c2, int duration) {
+    float steps = duration / 25;
+    Color nextColor = c1.lerp(c2, _step / steps);
     setColor(nextColor);
     delay(25);
-    step(0, 100);
+    step(0, steps);
   }
 
+  void Led::fadeOnce(Color c1, Color c2, int duration) {
+    float steps = duration / 25;
+    for (int i = 1; i <= steps; i++) {
+      Color nextColor = c1.lerp(c2, i / steps);
+      setColor(nextColor);
+      delay(25);
+    }
+  }
 
   bool isIncreasing = true;
   void Led::step(int min, int max) {
