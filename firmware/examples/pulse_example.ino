@@ -1,10 +1,13 @@
 #include "rgb-controls/rgb-controls.h"
-
 using namespace RGBControls;
 
 Led led(D0, D1, D2);
-Color color(255, 0, 0);
+Color red(255, 0, 0);
+
+
+void setup() { }
 
 void loop() {
-  led.pulse(color, 0, 100 , 5000);
+  // Pulse red from 10% brightness to 100% brightness every 5 seconds
+  led.fade(red.withBrightness(10), red, 5000);
 }
